@@ -1,5 +1,5 @@
 {
-	"name": "mbio-dev",
+	"name": "clinic_sample",
 	"build": {
 		"dockerfile": "../infra/development.Dockerfile",
 		"context": "..",
