@@ -7,7 +7,7 @@ The goal of this repository is to be a central location for documenting and vers
 
 ## Usage
 
-The file ``DataPolicy.md" contains the _default_ data and code sharing policies for the project.  
+The file ``DataPolicy.md" contains the _default_ data and code sharing policies for the project.
 
 To use these template in a repository:;
 
