@@ -6,3 +6,6 @@ ipykernel~=6.16
 
 # project packages
 pandas~=1.4
+
+# cluster specific
+submitit~=1.4
