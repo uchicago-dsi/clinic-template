@@ -22,6 +22,7 @@ Here are names of characters that we might com accross while coding. You should 
 | /         | slash         | forward slash |
 | \         | backslash     | escape character |
 | %         | percent sign  | mod |
+| #         | hash          | pound |
 | <         | less than     | |
 | >         | greater than  | |
 | \(        | opening parenthesis | open paren, left paren |
