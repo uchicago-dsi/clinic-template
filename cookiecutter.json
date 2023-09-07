@@ -1,0 +1,10 @@
+{
+    "project_name": "Template DSI Clinic Repository",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "cluster": ["yes", "no"],
+    "Docker": ["yes", "no"],
+    "__prompts__": {
+        "cluster": "Will this project use a remote computing cluster?",
+        "docker": "Will this project use Docker containers?"
+    }
+}
