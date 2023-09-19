@@ -19,7 +19,7 @@ notebooks_dir := "$(current_abs_path)notebooks"
 # environment variables
 # include .env
 
-# Build Docker image for pipeline
+{% if cookiecutter.docker == "yes" %}# Build Docker image for pipeline
 build-pipeline:
 	docker build -t $(pipeline_image_name) -f "${pipeline_dir}/Dockerfile" $(current_abs_path) --target prod
 
@@ -41,3 +41,7 @@ run-notebooks:
 	--name $(notebooks_container_name) --rm -p 8888:8888 -t $(notebooks_image_name) \
 	jupyter lab --port=8888 --ip='*' --NotebookApp.token='' --NotebookApp.password='' \
 	--no-browser --notebook-dir=/{{ cookiecutter.project_slug }}/notebooks --allow-root
+{% endif %}{% if cookiecutter.cluster == "yes" %}
+open-ssh-login-node:
+	code --remote ssh-remote+fe.ds ~/{{ cookiecutter.project_slugj }}
+{% endif %}
