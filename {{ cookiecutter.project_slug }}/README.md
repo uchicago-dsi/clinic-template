@@ -1,4 +1,4 @@
-# {% cookiecutter.project_name %}
+# {{ cookiecutter.project_name }}
 
 ## Project Background
 
@@ -7,7 +7,7 @@
 
 ## Repository Structure
 
-### {% cookiecutter.code_directory %}
+### {{ cookiecutter.code_directory }}
 Project python code
 
 ### notebooks
