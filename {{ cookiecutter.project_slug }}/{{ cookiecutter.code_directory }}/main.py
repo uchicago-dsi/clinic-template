@@ -1,29 +1,16 @@
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
-import submitit
+{% if cookiecutter.cluster == 'yes' %}import submitit
+
+{% endif %}from {{ cookiecutter.code_directory }}.preprocess import save_random_dataframe
+
 
 here = Path(__file__).parent
 repo_root = here.parent
 
 
-def save_random_dataframe(output_directory: Path, output_file: Path):
-    """Creates a random dataframe and saves to csv
-
-    Args:
-        output_directory: absolute path to directory to save df in
-        output_file: filename to save dataframe to in output_directory
-    Returns: None.
-    """
-    random_df = pd.DataFrame(
-        np.random.randint(0, 100, size=(100, 4)), columns=list("ABCD")
-    )
-    random_df.to_csv(output_directory / output_file)
-
-
 if __name__ == "__main__":
-    # code that will only be run when this file is executed as a script
+    {% if cookiecutter.cluster == 'yes' %}# code that will only be run when this file is executed as a script
     # (not if it is imported into another file as a module)
     import argparse
     import json
@@ -35,7 +22,9 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     # read in query
-    query_directory = here / "query"
+    if args.query is None:
+        args.query = "sample.json"
+    query_directory = repo_root / "config" / "query"
     if (query_directory / args.query).exists():
         query_path = query_directory / args.query
     elif Path(args.query).resolve().exists():
@@ -49,7 +38,7 @@ if __name__ == "__main__":
     # set up logging and results
     name = query.get("name", query_path.stem)
 
-    output_directory = query.get("output_directory", repo_root / "results")
+    output_directory = query.get("output_directory", repo_root / "output")
     output_file = query.get("output_file")
     output_directory = Path(output_directory)
     output_directory.mkdir(parents=True, exist_ok=True)
@@ -62,8 +51,8 @@ if __name__ == "__main__":
     executor.update_parameters(**query.get("slurm", {}))
 
     with executor.batch():
-        if query.get("cluster", False):
-            job = executor.submit(
+        if query.get("submitit", False):
+            executor.submit(
                 save_random_dataframe,
                 output_directory,
                 output_file,
@@ -72,4 +61,14 @@ if __name__ == "__main__":
             save_random_dataframe(
                 output_directory,
                 output_file,
-            )
+            ){% else %}
+    output_directory = repo_root / "output"
+    output_file = "sample_output.csv"
+    output_directory = Path(output_directory)
+    output_directory.mkdir(parents=True, exist_ok=True)
+
+    save_random_dataframe(
+        output_directory,
+        output_file,
+    )
+{% endif %}

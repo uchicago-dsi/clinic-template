@@ -1,0 +1,45 @@
+# {{ cookiecutter.project_name }}
+
+## Project Background
+
+## Project Goals
+
+
+## Usage
+
+{% if cookiecutter.docker == 'yes' %}### Docker
+
+To run a script in docker, run:
+```bash
+make build-pipeline
+make run-pipeline
+```
+To run a jupyter notebook in browser:
+```bash
+make build-notebooks
+make run-notebooks
+```
+To develop inside a container with VS Code (you can exucute scripts and use jupyter notebooks within VS code in the docker container):
+1. Open the repository in VS Code
+1. At the bottom right a window may appear that says `Folder contains a Dev Container configuration file...`. If it does, select, `Reopen in Container` and you are done. Otherwise proceed to next step. 
+1. Click the blue or green rectangle in the bottom left of VS code (should say something like `><` or `>< WSL`). Options should appear in the top center of your screen. Select `Reopen in Container`
+
+To debug docker and connect interactively, you can use `make run-pipeline-bash`.
+
+{% endif %}{% if cookiecutter.slurm == 'yes' %}### Slurm
+
+To open your repository with VS Code on the cluster login node, run `make run-ssh`. 
+{% end if %}
+
+## Repository Structure
+
+### {{ cookiecutter.code_directory }}
+Project python code
+
+### notebooks
+Contains short, clean notebooks to demonstrate analysis
+
+### data
+Contains details of aquiring all raw data used in repository.
+
+### output
