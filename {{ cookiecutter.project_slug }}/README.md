@@ -29,7 +29,7 @@ To debug docker and connect interactively, you can use `make run-pipeline-bash`.
 {% endif %}{% if cookiecutter.slurm == 'yes' %}### Slurm
 
 To open your repository with VS Code on the cluster login node, run `make run-ssh`. 
-{% end if %}
+{% endif %}
 
 ## Repository Structure
 
