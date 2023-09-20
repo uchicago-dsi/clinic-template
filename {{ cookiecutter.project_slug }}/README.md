@@ -26,7 +26,7 @@ To develop inside a container with VS Code (you can exucute scripts and use jupy
 
 To debug docker and connect interactively, you can use `make run-pipeline-bash`.
 
-{% endif %}{% if cookiecutter.slurm == 'yes' %}### Slurm
+{% endif %}{% if cookiecutter.cluster == 'yes' %}### Slurm
 
 To open your repository with VS Code on the cluster login node, run `make run-ssh`. 
 {% endif %}
