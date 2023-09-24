@@ -1,16 +1,17 @@
 from pathlib import Path
 
-{% if cookiecutter.cluster == 'yes' %}import submitit
+{% if cookiecutter.cluster == 'yes' %} import submitit
 
-{% endif %}from {{ cookiecutter.code_directory }}.preprocess import save_random_dataframe
-
+{% endif %}from {{ cookiecutter.code_directory }}.preprocess_util_example import save_random_dataframe
 
 here = Path(__file__).parent
 repo_root = here.parent
 
-
 if __name__ == "__main__":
-    {% if cookiecutter.cluster == 'yes' %}# code that will only be run when this file is executed as a script
+    
+    {% if cookiecutter.cluster == 'yes' %}
+
+    # code that will only be run when this file is executed as a script
     # (not if it is imported into another file as a module)
     import argparse
     import json
@@ -62,6 +63,8 @@ if __name__ == "__main__":
                 output_directory,
                 output_file,
             ){% else %}
+    # This is an example of running the code as a pipeline
+    # Rather than through a notebook
     output_directory = repo_root / "output"
     output_file = "sample_output.csv"
     output_directory = Path(output_directory)

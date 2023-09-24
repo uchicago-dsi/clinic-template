@@ -6,6 +6,6 @@ ipykernel~=6.16
 
 # project packages
 pandas~=1.4
-{% if cookiecutter.cluster == 'yes' %}# cluster specific
+{% if cookiecutter.cluster == 'yes' %} # cluster specific
 submitit~=1.4
 {% endif %}

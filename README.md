@@ -8,14 +8,32 @@ The goal of this repository is to be a central location for templating Universit
 ## Usage
 
 1. Install cookiecutter. `pip install cookiecutter`
-1. Select this template to create a repository in the current directory. `cookiecutter gh:ORG/REPO`
-1. Follow the prompts in your terminal.
+2. Select this template to create a repository in the current directory. `cookiecutter https://github.com/uchicago-dsi/clinic-sample`
+3. Follow the prompts in your terminal.
+4. Turn the directory into a git repository
+    ```sh
+    git init
+    git add .
+    git commit -m "Initial Commit"
+    ```
+5. We will follow the steps [here](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github#adding-a-local-repository-to-github-using-git) to create repo on github and then push this repository. 
+   1. Step \#1 is to crete an empty repo
+   2. Step \#2 is to set the remote branch and then push. Note that the code below requires replacing the GH_ORG and the REPO_NAME.
 
+    ```sh
+    git remote add origin git@github.com:{{GH_ORG}}/{{REPO_NAME}}.git
+    git branch -M main
+    git push -u origin main
+    ```
 
-### Notes once complte
+### Next steps
+
+1. Did you add branch protections?
+2. Set up additional users and permissions.
+
+### Notes once complete 
+
 The file ``DataPolicy.md" contains the _default_ data and code sharing policies for the project.
-Protect main and dev
-
 
 ## Linter
 
