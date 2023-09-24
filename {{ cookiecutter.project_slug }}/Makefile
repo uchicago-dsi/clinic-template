@@ -15,21 +15,21 @@ project_dir := "$(current_abs_path)"
 # This will not be required for all projects
 # include .env
 
-{% if cookiecutter.docker == "yes" %}# Build Docker image for pipeline
+{% if cookiecutter.docker == "yes" %}# Build Docker image 
 build-only:
 	docker build -t $(project_image_name) -f Dockerfile $(current_abs_path)
 
 run-interactive:
 	docker build -t $(project_image_name) -f Dockerfile $(current_abs_path)
-	docker run -it $(project_image_name) /bin/bash
+	docker run -it -v $(current_abs_path):/project -t $(project_image_name) /bin/bash
 
 run-notebooks:
 	docker build -t $(project_image_name) -f Dockerfile $(current_abs_path)
-	docker run -v $(current_abs_path):/project \	
-	--name $(project_container_name) --rm -p 8888:8888 -t $(project_image_name) \
+	docker run -v $(current_abs_path):/project -p 8888:8888 -t $(project_image_name) \
 	jupyter lab --port=8888 --ip='*' --NotebookApp.token='' --NotebookApp.password='' \
-	--no-browser --notebook-dir=/{{ cookiecutter.project_slug }}/notebooks --allow-root
+	--no-browser --allow-root
+
 {% endif %}{% if cookiecutter.cluster == "yes" %}
 open-ssh-login-node:
-	code --remote ssh-remote+fe.ds ~/{{ cookiecutter.project_slugj }}
+	code --remote ssh-remote+fe.ds ~/{{ cookiecutter.project_slug }}
 {% endif %}
