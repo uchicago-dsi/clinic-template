@@ -3,7 +3,7 @@ import os
 
 use_cluster = "{{ cookiecutter.cluster }}" == "yes"
 use_docker = "{{ cookiecutter.docker }}" == "yes"
-create_example_files = "{{ cookiecutter.use_example }}" == "yes"
+create_example_files = "{{ cookiecutter.examples }}" == "yes"
 
 if not use_cluster:
     shutil.rmtree("config")
