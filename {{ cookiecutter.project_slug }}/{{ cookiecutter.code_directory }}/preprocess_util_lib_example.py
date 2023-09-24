@@ -2,7 +2,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-# This file provides an example of building utilities for use in 
+# This file provides an example of building utilities for use in
 # either notebooks or pipelines.
 
 

@@ -4,7 +4,6 @@
 
 ## Project Goals
 
-
 ## Usage
 
 {% if cookiecutter.docker == 'yes' %}### Docker

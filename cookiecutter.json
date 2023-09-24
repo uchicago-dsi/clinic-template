@@ -11,6 +11,6 @@
         "code_directory": "Name the directory containing python code",
         "cluster": "Will this project use a remote computing cluster?",
         "docker": "Will this project use Docker containers?",
-        "smoke_test": "Would you like to populate the repository with some simple code for quick testing?"
+        "example": "Would you like to populate the repository with some example code?"
     }
 }
