@@ -2,7 +2,7 @@ from pathlib import Path
 
 {% if cookiecutter.cluster == 'yes' %} import submitit
 
-{% endif %}from {{ cookiecutter.code_directory }}.preprocess_util_example import save_random_dataframe
+{% endif %}from {{ cookiecutter.code_directory }}.preprocess_util_lib_example import save_random_dataframe
 
 here = Path(__file__).parent
 repo_root = here.parent
