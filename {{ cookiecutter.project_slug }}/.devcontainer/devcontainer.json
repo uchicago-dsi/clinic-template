@@ -1,7 +1,7 @@
 {
 	"name": "{{ cookiecutter.project_slug }}-devcontainer",
 	"build": {
-		"dockerfile": "../{{ cookiecutter.code_directory }}/Dockerfile",
+		"dockerfile": "../Dockerfile",
 		"context": "..",
 		"args": {},
 	},
@@ -23,14 +23,14 @@
                 },
                 "isort.args": [
                     "--profile", "black",
-                    "--line_length", "88",
+                    "--line_length", "80",
                     "--multi_line_output", "3",
                     "--include_trailing_comma", "true",
                     "force_grid_wrap", "0",
                     "--use_parentheses", "true"
                 ],
                 "flake8.args": [
-                    "--max-line-length", "88",
+                    "--max-line-length", "80",
                     "--extend-ignore", "E203"    
                 ]
             },
@@ -69,6 +69,6 @@
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip3 install -r requirements.txt",
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"workspaceMount": "source=${localWorkspaceFolder},target=/{{ cookiecutter.project_slug }},type=bind",
-	"workspaceFolder": "/{{ cookiecutter.project_slug }}"
+	"workspaceMount": "source=${localWorkspaceFolder},target=/project,type=bind",
+	"workspaceFolder": "/project"
 }
