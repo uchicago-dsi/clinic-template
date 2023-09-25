@@ -1,7 +1,5 @@
 # These first lines allow us to access code from sibling directories
 from pathlib import Path
-import sys
-sys.path.append('..')
 
 {% if cookiecutter.cluster == 'yes' %}import submitit
 {% endif %}from {{ cookiecutter.code_directory }}.preprocess_util_lib_example import save_random_dataframe
