@@ -16,5 +16,9 @@ WORKDIR /project
 # Install Python 3 packages
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+# install project as an editable package
+COPY {{ cookiecutter.code_directory }} ./{{ cookiecutter.code_directory }}
+COPY setup.py .
+RUN pip install -e .
 
 CMD ["/bin/bash"]
