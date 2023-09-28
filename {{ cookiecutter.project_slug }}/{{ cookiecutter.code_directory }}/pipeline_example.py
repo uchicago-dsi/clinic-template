@@ -30,7 +30,8 @@ if __name__ == "__main__":
         query_path = Path(args.query).resolve()
     else:
         raise ValueError(
-            f"Could not locate {args.query} in query directory or as absolute path"
+            f"Could not locate {args.query} in \
+                query directory or as absolute path"
         )
     with open(query_path) as f:
         query = json.load(f)
