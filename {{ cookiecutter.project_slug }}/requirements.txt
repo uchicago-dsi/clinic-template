@@ -5,7 +5,7 @@ pre-commit~=2.20
 ipykernel~=6.16
 
 # project packages
-pandas~=1.4
+pandas~=2.1
 {% if cookiecutter.cluster == 'yes' %} # cluster specific
 submitit~=1.4
 {% endif %}
