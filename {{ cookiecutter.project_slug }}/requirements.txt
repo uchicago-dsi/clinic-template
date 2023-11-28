@@ -1,5 +1,6 @@
 # development tools
 flake8~=4.0
+flake8-bugbear~=23.11
 black~=22.1
 pre-commit~=2.20
 ipykernel~=6.16
