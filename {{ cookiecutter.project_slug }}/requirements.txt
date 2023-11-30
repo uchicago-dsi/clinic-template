@@ -2,6 +2,8 @@
 flake8~=4.0
 black~=22.1
 pre-commit~=2.20
+pytest~=7.4
+coverage~=7.3
 ipykernel~=6.16
 
 # project packages
