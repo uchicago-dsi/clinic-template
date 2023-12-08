@@ -16,10 +16,15 @@
                 },
                 "python.defaultInterpreterPath": "/usr/local/bin/python3",
                 "python.languageServer": "Pylance",
-                "editor.defaultFormatter": "ms-python.black-formatter",
-                "editor.formatOnSave": true,
-                "editor.codeActionsOnSave": {
-                    "source.organizeImports": true
+                "python.formatting.provider": "black",
+                "[python]": {
+                    "diffEditor.ignoreTrimWhitespace": false,
+                    "editor.formatOnSave": true,
+                    "editor.wordBasedSuggestions": "matchingDocuments",
+                    "editor.defaultFormatter": "ms-python.black-formatter",
+                    "editor.codeActionsOnSave": {
+                        "source.organizeImports": true
+                    }
                 },
                 "isort.args": [
                     "--profile", "black",
