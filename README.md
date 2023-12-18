@@ -8,7 +8,7 @@ The goal of this repository is to be a central location for templating Universit
 ## Usage
 
 1. Install cookiecutter. `pip install cookiecutter`
-2. Select this template to create a repository in the current directory. `cookiecutter https://github.com/uchicago-dsi/clinic-sample`
+2. Select this template to create a repository in the current directory. `cookiecutter https://github.com/uchicago-dsi/clinic-template`
 3. Follow the prompts in your terminal.
 4. Turn the directory into a git repository
     ```sh
