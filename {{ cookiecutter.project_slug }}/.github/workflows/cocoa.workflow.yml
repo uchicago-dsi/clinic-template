@@ -1,3 +1,4 @@
+{% raw %}
 name: Clinic Opinionated Codebase Oversight and Analysis
 
 on: workflow_dispatch
@@ -34,3 +35,4 @@ jobs:
               repo: context.repo.repo,
               body: `${{ env.REPORT }}`
             })
+{% endraw %}
