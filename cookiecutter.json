@@ -1,16 +1,16 @@
 {
     "project_name": "Template DSI Clinic Repository",
-    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
     "code_directory": "utils",
     "cluster": ["yes", "no"],
     "docker": ["yes", "no"],
     "examples": ["yes", "no"],
     "__prompts__": {
-        "project_name": "What is the name of this project?",
-        "project_slug": "Name the project root directory.",
+        "project_name": "What is the name of this project? (This will be used as the project name in the README, etc)",
+        "project_slug": "Name the project root directory. (This will be used as the project folder)",
         "code_directory": "Name the directory containing python code",
-        "cluster": "Will this project use a remote computing cluster?",
-        "docker": "Will this project use Docker containers?",
+        "cluster": "Will this project use a remote computing cluster? (Updates README and provides sample files)",
+        "docker": "Will this project use Docker containers? (Updates the README and adds sample files)",
         "examples": "Would you like to populate the repository with some example code?"
     }
 }
