@@ -1,3 +1,5 @@
+"""Pipeline example"""
+
 # These first lines allow us to access code from sibling directories
 from pathlib import Path
 
