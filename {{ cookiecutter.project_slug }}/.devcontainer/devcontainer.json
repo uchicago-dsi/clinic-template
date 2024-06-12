@@ -15,30 +15,11 @@
                     }
                 },
                 "python.defaultInterpreterPath": "/usr/local/bin/python3",
-                "python.languageServer": "Pylance",
-                "python.formatting.provider": "black",
-                "[python]": {
-                    "diffEditor.ignoreTrimWhitespace": false,
-                    "editor.formatOnSave": true,
-                    "editor.wordBasedSuggestions": "matchingDocuments",
-                    "editor.defaultFormatter": "ms-python.black-formatter",
-                    "editor.codeActionsOnSave": {
-                        "source.organizeImports": true
-                    }
-                },
-                "isort.args": [
-                    "--settings-path", "${workspaceFolder}/setup.cfg"
-                ],
-                "flake8.args": [
-                    "--config", "${workspaceFolder}/setup.cfg"
-                ]
+                "python.languageServer": "Pylance"
             },
             "extensions": [
                 "ms-python.python",
                 "ms-python.vscode-pylance",
-                "ms-python.flake8",
-                "ms-python.black-formatter",
-                "ms-python.isort",
                 "ms-vscode-remote.remote-containers",
                 "ms-toolsai.jupyter",
                 "ms-toolsai.jupyter-renderers"
