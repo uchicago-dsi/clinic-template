@@ -35,7 +35,7 @@ if __name__ == "__main__":
             f"Could not locate {args.query} in \
                 query directory or as absolute path"
         )
-    with open(query_path) as f:
+    with query_path.open() as f:
         query = json.load(f)
     # set up logging and results
     name = query.get("name", query_path.stem)
