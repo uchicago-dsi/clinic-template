@@ -2,7 +2,7 @@
     "output_file": "test_file.csv",
     "cluster": true,
     "slurm": {
-        "slurm_array_parallelism": 6,
+        "slurm_array_parallelism": 2,
         "slurm_partition": "general",
         "slurm_job_name": "test",
         "slurm_nodes": 1,
