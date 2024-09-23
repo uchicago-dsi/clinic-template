@@ -1,13 +1,9 @@
 """Pipeline example"""
+{% if cookiecutter.cluster == 'yes' %}from pathlib import Path
 
-# These first lines allow us to access code from sibling directories
-from pathlib import Path
-
-{% if cookiecutter.cluster == 'yes' %}import submitit
-{% endif %}from {{ cookiecutter.code_directory }}.preprocess_util_lib_example import save_random_dataframe
-
-current_directory = Path(__file__).parent
-repo_root = current_directory.parent
+import submitit
+{% endif %}
+from {{ cookiecutter.code_directory }}.preprocess_util_lib_example import REPO_ROOT, save_random_dataframe
 
 if __name__ == "__main__":
     {% if cookiecutter.cluster == 'yes' %}
@@ -25,7 +21,7 @@ if __name__ == "__main__":
     # read in query
     if args.query is None:
         args.query = "sample.json"
-    query_directory = repo_root / "config" / "query"
+    query_directory = REPO_ROOT / "config" / "query"
     if (query_directory / args.query).exists():
         query_path = query_directory / args.query
     elif Path(args.query).resolve().exists():
@@ -40,7 +36,7 @@ if __name__ == "__main__":
     # set up logging and results
     name = query.get("name", query_path.stem)
 
-    output_directory = query.get("output_directory", repo_root / "output")
+    output_directory = query.get("output_directory", REPO_ROOT / "output")
     output_file = query.get("output_file")
     output_directory = Path(output_directory)
     output_directory.mkdir(parents=True, exist_ok=True)
@@ -63,12 +59,10 @@ if __name__ == "__main__":
             save_random_dataframe(
                 output_directory,
                 output_file,
-            ){% else %}
-    # This is an example of running the code as a pipeline
+            ){% else %}# This is an example of running the code as a pipeline
     # Rather than through a notebook
-    output_directory = repo_root / "output"
+    output_directory = REPO_ROOT / "output"
     output_file = "sample_output.csv"
-    output_directory = Path(output_directory)
     output_directory.mkdir(parents=True, exist_ok=True)
 
     save_random_dataframe(
