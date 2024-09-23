@@ -8,7 +8,7 @@ name = "{{ cookiecutter.project_slug }}"
 dynamic = ["version"]
 
 [tool.setuptools.packages.find]
-where = ["{{ cookiecutter.code_directory }}"]
+where = ["src"]
 
 [tool.ruff.lint]
 extend-select = [
