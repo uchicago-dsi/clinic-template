@@ -3,7 +3,7 @@
 	"build": {
 		"dockerfile": "../Dockerfile",
 		"context": "..",
-		"args": {},
+		"args": {}
 	},
 	// Set *default* container specific settings.json values on container create.
     "customizations": {
@@ -17,8 +17,9 @@
                 "python.defaultInterpreterPath": "/usr/local/bin/python3",
                 "python.languageServer": "Pylance",
 				"[python]": {
-					"editor.defaultFormatter": "charliemarch.ruff",
+					"editor.defaultFormatter": "charliermarsh.ruff",
 					"editor.wordBasedSuggestions": "matchingDocuments",
+					"editor.formatOnSave": true,
 					"editor.codeActionsOnSave": {
 						"source.organizeImports": "always"
 					}
@@ -27,7 +28,7 @@
             "extensions": [
                 "ms-python.python",
                 "ms-python.vscode-pylance",
-				"charliemarsh.ruff",
+				"charliermarsh.ruff",
                 "ms-vscode-remote.remote-containers",
                 "ms-toolsai.jupyter",
                 "ms-toolsai.jupyter-renderers"
