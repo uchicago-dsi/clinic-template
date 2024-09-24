@@ -36,7 +36,7 @@ jobs:
       - name: Run Pytest
         run: |
           # coverage run on pytest. If pytest fails, workflow exits in failure
-          coverage run -m pytest --doctest-modules
+          coverage run -m pytest --doctest-modules || if [ $? -eq 5 ]; then echo "No tests found."; else exit 1; fi
           coverage json
           export TOTAL=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered_display'])")
           echo "total=$TOTAL" >> $GITHUB_ENV
