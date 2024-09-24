@@ -1,13 +1,16 @@
+"""Utilities example"""
+
+# This file provides an example of building utilities for use in
+# either notebooks or pipelines.
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-# This file provides an example of building utilities for use in
-# either notebooks or pipelines.
+current_directory = Path(__file__).parent
+REPO_ROOT = current_directory.parent.parent
 
-
-def save_random_dataframe(output_directory: Path, output_file: Path):
+def save_random_dataframe(output_directory: Path, output_file: Path) -> None:
     """Creates a random dataframe and saves to csv
 
     Args:

@@ -37,7 +37,7 @@ The file ``DataPolicy.md" contains the _default_ data and code sharing policies 
 
 ## Linter
 
-To check for style, we use `flake8`, `black`, and `isort`. These are all run using `pre-commit`. [pre-commit](https://pre-commit.com/) is a tool for managing git hook scripts that we can use to run code checkers before git actions (like run `flake8` before every commit). If it fails, the commit will be blocked and the user will be shown what needs to be changed. We configure our linters with [setup.cfg](https://docs.python.org/3/distutils/configfile.html)
+To check for style, we use `ruff`. This run using `pre-commit`. [pre-commit](https://pre-commit.com/) is a tool for managing git hook scripts that we can use to run code checkers before git actions (like run `ruff` before every commit). If it fails, the commit will be blocked and the user will be shown what needs to be changed. We configure our linters with [pyproject.toml](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/)
 
 
 ## GitHub
