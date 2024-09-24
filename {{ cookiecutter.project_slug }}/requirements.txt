@@ -1,11 +1,10 @@
 # development tools
-flake8~=6.1
-flake8-bugbear~=23.11
-black~=23.11
+ruff
 pre-commit~=3.5
 coverage~=7.3
 pytest~=7.4
 ipykernel~=6.16
+setuptools>=64.0.0
 
 # project packages
 pandas~=2.1
