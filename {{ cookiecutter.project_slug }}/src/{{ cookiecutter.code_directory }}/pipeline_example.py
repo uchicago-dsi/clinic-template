@@ -68,5 +68,4 @@ if __name__ == "__main__":
     save_random_dataframe(
         output_directory,
         output_file,
-    )
-{% endif %}
+    ){% endif %}
