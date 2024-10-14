@@ -6,6 +6,7 @@
     "docker": ["yes", "no"],
     "examples": ["yes", "no"],
     "bsd": ["yes", "no"],
+    "ann": ["yes", "no"],
     "__prompts__": {
         "project_name": "What is the name of this project? (This will be used as the project name in the README, etc)",
         "project_slug": "Name the project root directory. (This will be used as the project folder)",
@@ -13,6 +14,7 @@
         "cluster": "Will this project use a remote computing cluster? (Updates README and provides sample files)",
         "docker": "Will this project use Docker containers? (Updates the README and adds sample files)",
         "examples": "Would you like to populate the repository with some example code?",
-        "bsd": "Would you like to use DSI's default license (BSD-3)?"
+        "bsd": "Would you like to use DSI's default license (BSD-3)?",
+        "ann": "Would you like to require type annotations in ruff?"
     }
 }

@@ -6,6 +6,7 @@ use_cluster = "{{ cookiecutter.cluster }}" == "yes"
 use_docker = "{{ cookiecutter.docker }}" == "yes"
 create_example_files = "{{ cookiecutter.examples }}" == "yes"
 keep_bsd3 = f"{{ cookiecutter.bsd }}" == "yes"
+use_annotations = f"{{ cookiecutter.ann }}" == "yes"
 
 if not use_cluster:
     shutil.rmtree("config")
@@ -32,4 +33,16 @@ else:
             line = line.replace("YEAR", str(datetime.today().year), 1)
         new_text_lines.append(line)
     with open("LICENSE", "w") as f:
+        f.writelines(new_text_lines)
+
+if not use_annotations:
+    # remove annotation line
+    new_text_lines = []
+    with open("pyproject.toml", "r") as f:
+        old_text_lines = f.readlines()
+    for line in old_text_lines:
+        if "ANN" in line:
+            line = ""
+        new_text_lines.append(line)
+    with open("pyproject.toml", "w") as f:
         f.writelines(new_text_lines)
