@@ -38,7 +38,14 @@ ignore = [
   "ANN003", # missing type on **kwargs
   "ANN101", # deprecated rule
   "ANN102", # deprecated rule
-  "B905"    # won't work on python <3.10
+  "B905",   # won't work on python <3.10
+  "D105",   # missing docstrings for magic commands.
+  "D107",   # nope dont need it.
+  "D100",  
+  "ANN204", # return type on __init__
+  "PD901",  # it's fine to have a df called df
+  "S608",   # sql Injection.. lets ignore for now
+  "S101"    # asserts are fine
 ]
 
 [tool.ruff.lint.pydocstyle]
