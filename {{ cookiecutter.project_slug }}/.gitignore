@@ -138,3 +138,8 @@ venv.bak/
 
 # data files
 *.avro
+
+{% if cookiecutter.data_dir == 'local' %}
+# data directory
+data/
+{% endif %}
