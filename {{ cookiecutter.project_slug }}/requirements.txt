@@ -8,6 +8,5 @@ setuptools>=64.0.0
 
 # project packages
 pandas~=2.1
-{% if cookiecutter.cluster == 'yes' %} # cluster specific
-submitit~=1.4
-{% endif %}
+{% if cookiecutter.data_dir != 'none' %}python-dotenv~=1.0.0{% endif %}
+{% if cookiecutter.cluster == 'yes' %}submitit~=1.4{% endif %}
