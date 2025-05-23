@@ -4,6 +4,7 @@
     "code_directory": "utils",
     "cluster": ["yes", "no"],
     "docker": ["yes", "no"],
+    "data_dir": ["none", "local", "github", "box"],
     "examples": ["yes", "no"],
     "bsd": ["yes", "no"],
     "ann": ["yes", "no"],
@@ -13,6 +14,13 @@
         "code_directory": "Name the directory containing python code",
         "cluster": "Will this project use a remote computing cluster? (Updates README and provides sample files)",
         "docker": "Will this project use Docker containers? (Updates the README and adds sample files)",
+        "data_dir": {
+            "__prompt__": "Where will this project store its data? This will set a default DATA_DIR in a .env and .env.example file, which can be imported from settings.py.",
+            "none": "None: DATA_DIR will not be set",
+            "local": "Local, in project directory: DATA_DIR will be {project_root}/data/, which will be added to .gitignore",
+            "github": "GitHub: DATA_DIR will be {project_root}/data/ (does not support >100MB)",
+            "box": "Box Drive: DATA_DIR will be ~/Library/CloudStorage/Box-Box/dsi-core/11th-hour/{project_name}, which is the default location for Box files on macOS"
+        },
         "examples": "Would you like to populate the repository with some example code?",
         "bsd": "Would you like to use DSI's default license (BSD-3)?",
         "ann": "Would you like to require type annotations in ruff?"

@@ -1,10 +1,7 @@
 {
 	"name": "{{ cookiecutter.project_slug }}-devcontainer",
-	"build": {
-		"dockerfile": "../Dockerfile",
-		"context": "..",
-		"args": {}
-	},
+	"dockerComposeFile": "../docker-compose.yml",
+	"service": "{{ cookiecutter.project_slug }}",
 	// Set *default* container specific settings.json values on container create.
     "customizations": {
         "vscode": {

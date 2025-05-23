@@ -1,0 +1,15 @@
+services:
+  {{ cookiecutter.project_slug }}:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/project
+      {% if cookiecutter.data_dir != 'none' %}- ${DATA_DIR}:/data{% endif %}
+    {% if cookiecutter.data_dir != 'none' %}
+    environment:
+      DATA_DIR: /data
+    {% endif %}
+    shm_size: '16gb'
+    stdin_open: true
+    tty: true

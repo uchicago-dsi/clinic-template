@@ -4,6 +4,8 @@ from datetime import datetime
 
 use_cluster = "{{ cookiecutter.cluster }}" == "yes"
 use_docker = "{{ cookiecutter.docker }}" == "yes"
+use_data_dir = "{{ cookiecutter.data_dir }}" != "none"
+use_local_data_dir = "{{ cookiecutter.data_dir }}" == "local"
 create_example_files = "{{ cookiecutter.examples }}" == "yes"
 keep_bsd3 = f"{{ cookiecutter.bsd }}" == "yes"
 use_annotations = f"{{ cookiecutter.ann }}" == "yes"
@@ -13,6 +15,13 @@ if not use_cluster:
 
 if not use_docker:
     os.remove("Dockerfile")
+    os.remove("docker-compose.yaml")
+
+if not use_data_dir:
+    os.remove("src/{{ cookiecutter.code_directory }}/settings.py")
+
+if not use_local_data_dir:
+    os.remove("data")
 
 if not create_example_files:
     os.remove("src/{{ cookiecutter.code_directory }}/pipeline_example.py")
