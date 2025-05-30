@@ -1,6 +1,6 @@
 {
 	"name": "{{ cookiecutter.project_slug }}-devcontainer",
-	"dockerComposeFile": "../docker-compose.yml",
+	"dockerComposeFile": "../docker-compose.yaml",
 	"service": "{{ cookiecutter.project_slug }}",
 	// Set *default* container specific settings.json values on container create.
     "customizations": {
