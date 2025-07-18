@@ -1,6 +1,6 @@
 {
 	"name": "{{ cookiecutter.project_slug }}-devcontainer",
-	"dockerComposeFile": "../docker-compose.yml",
+	"dockerComposeFile": "../docker-compose.yaml",
 	"service": "{{ cookiecutter.project_slug }}",
 	// Set *default* container specific settings.json values on container create.
     "customizations": {
@@ -32,6 +32,9 @@
             ]
         }
     },
+	{% if cookiecutter.data_dir != 'none' %}"remoteEnv": {
+		"DATA_DIR": "/data"
+	},{% endif %}
 	"runArgs": [
 		"--shm-size=16gb"
 	],

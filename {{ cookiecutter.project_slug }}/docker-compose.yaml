@@ -11,5 +11,6 @@ services:
       DATA_DIR: /data
     {% endif %}
     shm_size: '16gb'
+    # At least one of stdin_open or tty is required to make devcontainer work
     stdin_open: true
     tty: true
