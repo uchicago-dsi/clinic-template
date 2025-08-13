@@ -6,6 +6,9 @@ pytest~=7.4
 ipykernel~=6.16
 setuptools>=64.0.0
 
+# Jupyter
+jupyterlab~=4.0.0
+
 # project packages
 pandas~=2.1
 {% if cookiecutter.data_dir != 'none' %}python-dotenv~=1.0.0{% endif %}
