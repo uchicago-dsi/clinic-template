@@ -110,7 +110,13 @@ The file `Makefile` contains details about the specific commands that are run wh
 ## Style
 We use [`ruff`](https://docs.astral.sh/ruff/) to enforce style standards and grade code quality. This is an automated code checker that looks for specific issues in the code that need to be fixed to make it readable and consistent with common standards. `ruff` is run before each commit via [`pre-commit`](https://pre-commit.com/). If it fails, the commit will be blocked and the user will be shown what needs to be changed.
 
-To check for errors locally, first ensure that `pre-commit` is installed by running `pip install pre-commit` followed by `pre-commit install`. Once installed, check for errors by running:
+Once you have followed the quick setup instructions above for installing dependencies, you can run:
 ```bash
 pre-commit run --all-files
+```
+
+You can also run `ruff` directly:
+```bash
+ruff check
+ruff format
 ```
