@@ -16,9 +16,7 @@ if not use_docker:
 
 if not create_example_files:
     os.remove("utils/pipeline_example.py")
-    os.remove(
-        "utils/preprocess_util_lib_example.py"
-    )
+    os.remove("utils/preprocess_util_lib_example.py")
     os.remove("notebooks/Test.ipynb")
 
 if not keep_bsd3:

@@ -10,7 +10,7 @@ REPO_ROOT = os.environ["REPO_ROOT"]
 
 def generate_random_dataframe(no_rows: int = 10) -> pd.DataFrame:
     """Generates a random dataframe.
-    
+
     Args:
         no_rows: number of rows to generate
 

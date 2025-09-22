@@ -137,4 +137,4 @@ venv.bak/
 .mypy_cache/
 
 # data files
-*.avro
+*.avros
