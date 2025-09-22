@@ -11,27 +11,35 @@ project_dir := "$(current_abs_path)"
 
 # environment variables
 include .env
-{% if cookiecutter.data_dir != 'none' %}
+
 # Check required environment variables
 ifeq ($(DATA_DIR),)
-	$(error DATA_DIR must be set in .env file)
+    $(error DATA_DIR must be set in .env file)
 endif
-{% endif %}
+
 
 {% if cookiecutter.docker == "yes" %}# Build Docker image 
-.PHONY: build-only run-interactive run-notebook
+# Global mount for data directory
+mount_data := -v $(DATA_DIR):/project/data
+
+.PHONY: build-only run-interactive run-notebooks test-pipeline clean
 
 # Build Docker image 
 build-only: 
 	docker compose build
 
 run-interactive: build-only	
-	docker compose run -it --rm $(project_name) /bin/bash
+	docker compose run -it --rm $(mount_data) $(project_name) /bin/bash
 
 run-notebooks: build-only	
-	docker compose run --rm -p 8888:8888 -t $(project_name) \
-	jupyter lab --port=8888 --ip='*' --NotebookApp.token='' --NotebookApp.password='' \
-	--no-browser --allow-root
+	docker compose run --rm -p 8888:8888 -t $(mount_data) $(project_name) uv run jupyter lab --port=8888 --ip='*' --NotebookApp.token='' --NotebookApp.password='' --no-browser --allow-root
+
+test-pipeline: build-only
+	docker compose run --rm -t $(mount_data) $(project_name) uv run python src/utils/pipeline_example.py
+
+clean:
+	docker compose down --rmi all --volumes --remove-orphans
+	docker image prune -f
 
 {% endif %}{% if cookiecutter.cluster == "yes" %}
 open-ssh-login-node:

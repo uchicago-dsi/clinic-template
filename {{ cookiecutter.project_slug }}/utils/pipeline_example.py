@@ -1,14 +1,13 @@
 """Pipeline example"""
-{% if cookiecutter.cluster == 'yes' %}from pathlib import Path
 
-import submitit
-{% endif %}
-from {{ cookiecutter.code_directory }}.preprocess_util_lib_example import REPO_ROOT, save_random_dataframe
+import os
+from pathlib import Path
+{% if cookiecutter.cluster == 'yes' %}import submitit{% endif %}
+
+from utils.preprocess_util_lib_example import generate_random_dataframe, REPO_ROOT
 
 if __name__ == "__main__":
     {% if cookiecutter.cluster == 'yes' %}
-    # code that will only be run when this file is executed as a script
-    # (not if it is imported into another file as a module)
     import argparse
     import json
 
@@ -51,21 +50,19 @@ if __name__ == "__main__":
     with executor.batch():
         if query.get("submitit", False):
             executor.submit(
-                save_random_dataframe,
-                output_directory,
-                output_file,
+                generate_random_dataframe,
             )
         else:
-            save_random_dataframe(
-                output_directory,
-                output_file,
-            ){% else %}# This is an example of running the code as a pipeline
+            generate_random_dataframe()
+    {% else %}
+    # This is an example of running the code as a pipeline
     # Rather than through a notebook
-    output_directory = REPO_ROOT / "output"
+    data_dir = Path(os.environ["DATA_DIR"])
+    output_directory = data_dir / "output"
     output_file = "sample_output.csv"
     output_directory.mkdir(parents=True, exist_ok=True)
 
-    save_random_dataframe(
-        output_directory,
-        output_file,
-    ){% endif %}
+    random_df = generate_random_dataframe()
+    random_df.to_csv(output_directory / output_file, index=False)
+    print(f"Saved random dataframe to {output_directory / output_file}")
+    {% endif %}
