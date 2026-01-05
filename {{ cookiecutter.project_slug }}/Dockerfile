@@ -1,27 +1,23 @@
 # This is a basic docker image for use in the clinic
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
-FROM jupyter/minimal-notebook:python-3.11
-
-# Swith to root to update and install python dev tools
+# Switch to root to update and install tools
 USER root
-RUN apt update
-RUN apt install -y python3-pip python3-dev
+RUN apt-get update && apt-get install -y curl git
 
 # Create working directory
 WORKDIR /project
 
-# Adjust permissions for everything within /project before switching back to $NB_UID
-COPY --chown=$NB_UID:$NB_GID src ./src
-COPY --chown=$NB_UID:$NB_GID pyproject.toml .
-COPY --chown=$NB_UID:$NB_GID requirements.txt .
+# Copy source and config for initial install
+COPY src ./src
+COPY pyproject.toml .
 
-# Switch back to the non-root user before installing Python packages
-USER $NB_UID
-
-# Install Python 3 packages
-RUN pip install --no-cache-dir -r requirements.txt
-
-# install project as an editable package
-RUN pip install -e .
+# Create venv in /opt so it won't be shadowed by volume mounts
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
+RUN /usr/local/bin/uv venv $UV_PROJECT_ENVIRONMENT
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+ENV PYTHONPATH=/project/src
+RUN uv sync
 
 CMD ["/bin/bash"]

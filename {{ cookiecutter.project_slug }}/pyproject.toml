@@ -3,9 +3,26 @@ requires = ["setuptools >= 64.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-requires-python = ">=3.10"
 name = "{{ cookiecutter.project_slug }}"
+requires-python = ">=3.12"
 dynamic = ["version"]
+dependencies = [
+  # project packages
+  "numpy~=2.2",
+  "pandas~=2.2",
+  {% if cookiecutter.data_dir != 'none' %}"python-dotenv~=1.0.0",{% endif %}
+  {% if cookiecutter.cluster == 'yes' %}"submitit~=1.4",{% endif %}
+]
+
+[dependency-groups]
+dev = [
+  "ruff==0.7.2",
+  "pre-commit~=3.5",
+  "coverage~=7.3",
+  "pytest~=7.4",
+  "jupyterlab~=4.0.0",
+  "ipykernel~=6.16",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
