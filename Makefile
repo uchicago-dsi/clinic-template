@@ -1,6 +1,6 @@
 # Makefile for clinic-template development
 
-.PHONY: test test-basic test-local-data test-cluster test-precommit clean help
+.PHONY: test test-basic test-local-data test-cluster test-precommit test-examples-data-science clean help
 
 help:
 	@echo "Available targets:"
@@ -9,11 +9,12 @@ help:
 	@echo "  test-local-data - Test local data directory config"
 	@echo "  test-cluster    - Test cluster configuration"
 	@echo "  test-precommit  - Test pre-commit hooks"
+	@echo "  test-examples-data-science - Test data-science examples scaffold"
 	@echo "  clean           - Remove test artifacts"
 	@echo "  help            - Show this help message"
 
 # Run all tests
-test: test-basic test-local-data test-cluster test-precommit
+test: test-basic test-local-data test-cluster test-precommit test-examples-data-science
 	@echo ""
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@echo "ALL TESTS PASSED"
@@ -35,6 +36,10 @@ test-cluster:
 test-precommit:
 	@chmod +x tests/scenarios/test_precommit.sh
 	@./tests/scenarios/test_precommit.sh
+
+test-examples-data-science:
+	@chmod +x tests/scenarios/test_examples_data_science.sh
+	@./tests/scenarios/test_examples_data_science.sh
 
 # Clean up test artifacts
 clean:

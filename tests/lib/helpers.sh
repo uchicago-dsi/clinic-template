@@ -132,6 +132,52 @@ print(f'   ✓ submitit={submitit.__version__}')
 "
 }
 
+test_examples_data_science() {
+    local project_dir="$1"
+    local service_name="$2"
+    local module_name="$3"
+    echo "   Testing data-science examples scaffold..."
+    cd "$project_dir"
+
+    # _examples/ staging directory must be removed by the hook
+    if [ -d "_examples" ]; then
+        echo "   ✗ _examples/ staging directory was not removed"
+        return 1
+    fi
+    echo "   ✓ _examples/ staging directory removed"
+
+    # Every file that should have been copied into src/<module>/
+    local expected_files=(
+        "src/$module_name/cli.py"
+        "src/$module_name/evaluation.py"
+        "src/$module_name/inference.py"
+        "src/$module_name/io.py"
+        "src/$module_name/pipeline.py"
+        "src/$module_name/register.py"
+        "src/$module_name/evaluators/__init__.py"
+        "src/$module_name/evaluators/classifier_evaluator.py"
+        "src/$module_name/evaluators/example_evaluator.py"
+        "src/$module_name/inference_strategies/__init__.py"
+        "src/$module_name/inference_strategies/example_strategy.py"
+    )
+
+    for f in "${expected_files[@]}"; do
+        if [ ! -f "$f" ]; then
+            echo "   ✗ Expected file not found: $f"
+            return 1
+        fi
+        echo "   ✓ $f"
+    done
+
+    # Confirm the example submodules are importable inside the container
+    docker compose run --rm "$service_name" python -c "
+from $module_name import cli, evaluation, inference, io, pipeline, register
+from $module_name.evaluators import classifier_evaluator, example_evaluator
+from $module_name.inference_strategies import example_strategy
+print('   ✓ all data-science example modules imported successfully')
+"
+}
+
 test_precommit() {
     local project_dir="$1"
     local service_name="$2"
