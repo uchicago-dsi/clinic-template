@@ -10,7 +10,7 @@ from {{ cookiecutter.code_directory }}.register import discover_subclasses, get_
 
 class EvaluationStatus(StrEnum):
     """Why a particular key could not be evaluated."""
-    INCLUDED = "included"
+    EVALUATED = "evaluated"
     MISSING_FROM_PREDICTED = "missing_from_predicted"
     MISSING_FROM_ACTUAL = "missing_from_actual"
 
@@ -45,7 +45,7 @@ class AbstractEvaluator(ABC):
             elif k not in actual.keys():
                 evaluation_results[k] = {"status": EvaluationStatus.MISSING_FROM_ACTUAL}
             else:
-                evaluation_results[k] = {"status": EvaluationStatus.INCLUDED, **self.evaluate_single_output(predicted[k], actual[k])}
+                evaluation_results[k] = {"status": EvaluationStatus.EVALUATED, **self.evaluate_single_output(predicted[k], actual[k])}
         return evaluation_results
 
 
