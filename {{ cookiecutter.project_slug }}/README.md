@@ -125,7 +125,7 @@ To run inference and evaluation as separate steps:
 from {{ cookiecutter.code_directory }}.pipeline import run_inference, run_evaluation
 
 run_dir = run_inference("MyStrategy", params={"threshold": 0.8})
-run_evaluation("ClassifierEvaluator", output_dir=run_dir, expected_path=...)
+run_evaluation("ClassifierEvaluator", run_dir=run_dir, expected_path=...)
 ```
 
 ---

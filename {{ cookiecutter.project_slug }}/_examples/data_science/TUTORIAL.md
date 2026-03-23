@@ -311,7 +311,7 @@ from {{ cookiecutter.code_directory }}.pipeline import run_inference, run_evalua
 # Run inference only
 run_dir = run_inference("MyStrategy", params={"threshold": 0.8})
 
-run_evaluation("ExampleEvaluator", output_dir=run_dir, expected_path="data/expected")
+run_evaluation("ExampleEvaluator", run_dir=run_dir, expected_path="data/expected")
 ```
 
 ---

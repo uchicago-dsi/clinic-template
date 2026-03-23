@@ -68,8 +68,8 @@ def cli():
 )
 def infer(strategy_name, params, input_path, output_dir):
     """Run an inference strategy on the input data."""
-    run_output_dir = run_inference(strategy_name, input_path, output_dir, params=_parse_params(params))
-    click.echo(f"Done. Outputs saved to {run_output_dir}")
+    run_dir = run_inference(strategy_name, input_path, base_output_dir=output_dir, params=_parse_params(params))
+    click.echo(f"Done. Outputs saved to {run_dir}")
 
 
 # ---------------------------------------------------------------------------
@@ -134,9 +134,9 @@ def evaluate(evaluator_name, run_dir, expected_path):
 )
 def run(strategy_name, evaluator_name, params, input_path, expected_path, output_dir):
     """Run inference and evaluation in a single step."""
-    run_output_dir = run_pipeline(
+    run_dir = run_pipeline(
         strategy_name, evaluator_name, input_path,
-        expected_path=expected_path, output_dir=output_dir,
+        expected_path=expected_path, base_output_dir=output_dir,
         params=_parse_params(params),
     )
-    click.echo(f"Done. Results saved to {run_output_dir}")
+    click.echo(f"Done. Results saved to {run_dir}")

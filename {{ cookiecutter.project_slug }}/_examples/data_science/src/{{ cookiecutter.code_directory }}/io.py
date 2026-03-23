@@ -11,6 +11,11 @@ def load_inputs(input_path: Path) -> Mapping[str, Any]:
     raise NotImplementedError  # TODO: Implement
 
 
+def save_outputs(outputs: Mapping[str, Any], output_path: Path) -> None:
+    """Save outputs to the given path."""
+    raise NotImplementedError  # TODO: Implement
+
+
 def load_outputs(output_path: Path) -> Mapping[str, Any]:
     """Load outputs from the given path.
 
@@ -20,7 +25,3 @@ def load_outputs(output_path: Path) -> Mapping[str, Any]:
     """
     raise NotImplementedError  # TODO: Implement
 
-
-def save_outputs(outputs: dict[str, Any], output_path: Path) -> None:
-    """Save outputs to the given path."""
-    raise NotImplementedError  # TODO: Implement
