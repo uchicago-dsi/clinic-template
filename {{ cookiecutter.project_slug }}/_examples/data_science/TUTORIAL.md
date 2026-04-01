@@ -79,7 +79,56 @@ inside the container.
 
 ---
 
-## Step 3: Create a New Strategy
+## Step 3: Configure Your Data Directory
+
+Before you write any code, make sure the project knows where your shared data
+folder lives.
+
+In the VS Code window attached to the container:
+
+1. Copy `.env.example` to `.env`
+2. Open `.env` and check the `DATA_DIR` value
+3. Make sure it points to the Box folder your mentor shared with you
+
+You can sanity-check that the data is accessible from inside the container:
+
+```bash
+ls "$DATA_DIR"
+```
+
+If that path is empty or missing, fix it now. Most notebook and CLI issues in
+this scaffold come from the data directory being misconfigured.
+
+---
+
+## Step 4: Explore One Real Input First
+
+Before writing a strategy, look at an actual input so you understand the data
+shape you need to handle. Create a notebook in `notebooks/` and inspect a
+single example.
+
+```python
+from {{ cookiecutter.code_directory }}.settings import DATA_DIR
+from {{ cookiecutter.code_directory }}.io import load_inputs
+
+inputs = load_inputs(DATA_DIR / "input")
+key, single_input = next(iter(inputs.items()))
+
+print(key)
+single_input
+```
+
+Spend a minute answering basic questions before coding:
+
+- What Python type is each input?
+- What fields or structure does it contain?
+- What does a reasonable output dict need to capture?
+
+Once you understand one real example, writing `do_inference` gets much easier.
+
+---
+
+## Step 5: Create a New Strategy
 
 Every strategy lives in its own file inside
 `src/{{ cookiecutter.code_directory }}/inference_strategies/`.
@@ -164,7 +213,7 @@ try to commit, so it's easier to fix things as you go.
 
 ---
 
-## Step 4: Test It on a Single Input in a Notebook
+## Step 6: Test It on a Single Input in a Notebook
 
 Before running anything on the full dataset, make sure your logic works on
 one item. In the VS Code window attached to the container, create a new
@@ -202,6 +251,7 @@ In your first code cell, enable automatic reloading and put your imports:
 
 from {{ cookiecutter.code_directory }}.inference_strategies.my_strategy import MyStrategy
 from {{ cookiecutter.code_directory }}.io import load_inputs
+from {{ cookiecutter.code_directory }}.settings import DATA_DIR
 ```
 
 `%autoreload 2` tells the notebook to re-read your `.py` files every time you
@@ -211,7 +261,7 @@ notebook, you can just re-run the cell — no need to restart the kernel.
 In the next cell, load one input and test your strategy:
 
 ```python
-inputs = load_inputs("data/input")
+inputs = load_inputs(DATA_DIR / "input")
 key, single_input = next(iter(inputs.items()))
 
 strategy = MyStrategy()          # pass parameters here if your strategy takes any
@@ -237,7 +287,7 @@ to running the full pipeline.
 
 ---
 
-## Step 5: Run the Full Pipeline in a Notebook
+## Step 7: Run the Full Pipeline in a Notebook
 
 Now you'll run your strategy across *every* input and evaluate the results.
 
@@ -290,6 +340,18 @@ for key, value in list(results.items())[:5]:
     print(key, value)
 ```
 
+If you want a more tabular view, convert the results to a DataFrame:
+
+```python
+import pandas as pd
+
+results_df = pd.read_json(run_dir / "evaluation.json").T
+results_df.head()
+```
+
+`pd.DataFrame.from_dict(results, orient="index")` works too if you already
+have the JSON loaded into memory.
+
 If the evaluator produces plots (like a confusion matrix), they are saved as
 `.png` files in the same folder. You can display them in the notebook:
 
@@ -316,7 +378,7 @@ run_evaluation("ExampleEvaluator", run_dir=run_dir, expected_path="data/expected
 
 ---
 
-## Step 6: Run the Pipeline from the Command Line
+## Step 8: Run the Pipeline from the Command Line
 
 Switch back to the terminal where you ran `make run-interactive` — you should
 still have a bash prompt inside the container.

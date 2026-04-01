@@ -1,16 +1,45 @@
 """Basic scaffold for any inference strategy."""
+import logging
 from abc import ABC, abstractmethod
+from enum import StrEnum
 from typing import Any
 
 from {{ cookiecutter.code_directory }}.register import discover_subclasses, get_subclass
+
+logger = logging.getLogger(__name__)
+
+
+class InferenceStatus(StrEnum):
+    """Status of a single inference run."""
+
+    SUCCESS = "success"
+    FAILURE = "failure"
+    ERROR = "error"
 
 
 class InferenceStrategy(ABC):
     """Abstract base class for inference strategies."""
 
     @abstractmethod
-    def do_inference(self, inference_input: Any) -> dict[str, Any]:
+    def do_inference(self, inference_input: Any) -> dict[str, Any] | None:
         pass
+
+    def do_inference_safe(self, inference_input: Any) -> tuple[dict[str, Any] | None, InferenceStatus]:
+        """Run ``do_inference`` with exception handling.
+
+        Returns:
+            A tuple of ``(result, status)``.
+        """
+        try:
+            result = self.do_inference(inference_input)
+        except Exception:
+            logger.exception("Inference failed")
+            return None, InferenceStatus.ERROR
+
+        if result is None:
+            return None, InferenceStatus.FAILURE
+
+        return result, InferenceStatus.SUCCESS
 
     def metadata(self) -> dict[str, Any]:
         """Metadata about the inference strategy."""

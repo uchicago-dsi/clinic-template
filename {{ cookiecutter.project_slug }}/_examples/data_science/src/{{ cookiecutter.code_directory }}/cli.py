@@ -16,14 +16,14 @@ STRATEGIES = discover_inference_strategies()
 EVALUATORS = discover_evaluators()
 
 
-def _parse_params(params):
+def _parse_params(params: tuple[str, ...]) -> dict[str, object]:
     """Convert a tuple of 'key=value' strings into a dict.
 
     Values are automatically coerced via ``json.loads`` so that numbers,
     booleans, and lists come through with the right types.  Plain strings
     are kept as-is.
     """
-    parsed = {}
+    parsed: dict[str, object] = {}
     for p in params:
         key, _, value = p.partition("=")
         try:
@@ -39,7 +39,7 @@ def _parse_params(params):
 # ---------------------------------------------------------------------------
 
 @click.group()
-def cli():
+def cli() -> None:
     """{{ cookiecutter.project_name }} CLI."""
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
@@ -66,7 +66,7 @@ def cli():
     default=DEFAULT_OUTPUT_DIR,
     help="Base output directory.",
 )
-def infer(strategy_name, params, input_path, output_dir):
+def infer(strategy_name: str, params: tuple[str, ...], input_path: Path, output_dir: Path) -> None:
     """Run an inference strategy on the input data."""
     run_dir = run_inference(strategy_name, input_path, base_output_dir=output_dir, params=_parse_params(params))
     click.echo(f"Done. Outputs saved to {run_dir}")
@@ -94,7 +94,7 @@ def infer(strategy_name, params, input_path, output_dir):
     required=True,
     help="Path to expected/ground-truth outputs.",
 )
-def evaluate(evaluator_name, run_dir, expected_path):
+def evaluate(evaluator_name: str, run_dir: Path, expected_path: Path) -> None:
     """Evaluate inference outputs against expected results."""
     run_evaluation(evaluator_name, run_dir, expected_path)
     click.echo(f"Done. Evaluation results saved to {run_dir}")
@@ -132,7 +132,14 @@ def evaluate(evaluator_name, run_dir, expected_path):
     default=DEFAULT_OUTPUT_DIR,
     help="Base output directory.",
 )
-def run(strategy_name, evaluator_name, params, input_path, expected_path, output_dir):
+def run(
+    strategy_name: str,
+    evaluator_name: str,
+    params: tuple[str, ...],
+    input_path: Path,
+    expected_path: Path,
+    output_dir: Path,
+) -> None:
     """Run inference and evaluation in a single step."""
     run_dir = run_pipeline(
         strategy_name, evaluator_name, input_path,

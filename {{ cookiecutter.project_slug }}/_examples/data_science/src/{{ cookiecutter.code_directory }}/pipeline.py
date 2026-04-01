@@ -5,14 +5,17 @@ from notebooks and from the CLI.
 """
 import json
 import logging
+from collections import Counter
+from collections.abc import Mapping
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from {{ cookiecutter.code_directory }}.evaluation import get_evaluator
-from {{ cookiecutter.code_directory }}.inference import get_inference_strategy
+from {{ cookiecutter.code_directory }}.inference import InferenceStatus, get_inference_strategy
 from {{ cookiecutter.code_directory }}.io import load_inputs, load_outputs, save_outputs
 from {{ cookiecutter.code_directory }}.settings import DATA_DIR
+from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +24,12 @@ DEFAULT_OUTPUT_DIR = DATA_DIR / "output"
 DEFAULT_EXPECTED_OUTPUT = DATA_DIR / "expected_outputs.json"
 
 
-def run_inference(strategy_name, input_path=DEFAULT_INPUT, base_output_dir=DEFAULT_OUTPUT_DIR, params=None) -> Path:
+def run_inference(
+    strategy_name: str,
+    input_path: Path = DEFAULT_INPUT,
+    base_output_dir: Path = DEFAULT_OUTPUT_DIR,
+    params: Mapping[str, Any] | None = None,
+) -> Path:
     """Load inputs, run a strategy, save outputs and metadata.
 
     Args:
@@ -43,9 +51,13 @@ def run_inference(strategy_name, input_path=DEFAULT_INPUT, base_output_dir=DEFAU
     strategy = strategy_cls(**(params or {}))
 
     # Run inference on each input
-    outputs = {}
-    for key, value in inputs.items():
-        outputs[key] = strategy.do_inference(value)
+    outputs: dict[str, Any] = {}
+    statuses: dict[str, InferenceStatus] = {}
+    for key, value in tqdm(inputs.items(), desc=f"Running {strategy_name}", unit="input"):
+        result, status = strategy.do_inference_safe(value)
+        statuses[key] = status
+        if result is not None:
+            outputs[key] = result
 
     # Create timestamped output directory
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -56,17 +68,30 @@ def run_inference(strategy_name, input_path=DEFAULT_INPUT, base_output_dir=DEFAU
     save_outputs(outputs, run_dir)
     logger.info("Saved %d outputs to %s", len(outputs), run_dir)
 
+    statuses_path = run_dir / "statuses.json"
+    with statuses_path.open("w") as f:
+        json.dump(statuses, f, indent=2)
+    logger.info("Saved inference statuses to %s", statuses_path)
+
+    status_counts = Counter(statuses.values())
+    logger.info(
+        "Inference summary: %d success, %d errors, %d failures",
+        status_counts[InferenceStatus.SUCCESS],
+        status_counts[InferenceStatus.ERROR],
+        status_counts[InferenceStatus.FAILURE],
+    )
+
     # Save metadata
     metadata = strategy.metadata()
     metadata_path = run_dir / "metadata.json"
-    with open(metadata_path, "w") as f:
+    with metadata_path.open("w") as f:
         json.dump(metadata, f, indent=2)
     logger.info("Saved metadata to %s", metadata_path)
 
     return run_dir
 
 
-def run_evaluation(evaluator_name, run_dir, expected_path) -> Path:
+def run_evaluation(evaluator_name: str, run_dir: Path, expected_path: Path) -> Path:
     """Run an evaluator, saving results into the same directory as outputs.
 
     Writes ``evaluation.json`` and any plots directly into *run_dir*
@@ -90,9 +115,10 @@ def run_evaluation(evaluator_name, run_dir, expected_path) -> Path:
     results = evaluator.evaluate_all(predicted, actual)
 
     # Save evaluation results
-    with open(run_dir / "evaluation.json", "w") as f:
+    evaluation_path = run_dir / "evaluation.json"
+    with evaluation_path.open("w") as f:
         json.dump(results, f)
-    logger.info("Saved evaluation results to %s", run_dir)
+    logger.info("Saved evaluation results to %s", evaluation_path)
 
     # Save plots
     plots = evaluator.make_plots(results)
@@ -103,8 +129,15 @@ def run_evaluation(evaluator_name, run_dir, expected_path) -> Path:
     return run_dir
 
 
-def run_pipeline(strategy_name, evaluator_name, input_path=DEFAULT_INPUT,
-                 *, expected_path, base_output_dir=DEFAULT_OUTPUT_DIR, params=None) -> Path:
+def run_pipeline(
+    strategy_name: str,
+    evaluator_name: str,
+    input_path: Path = DEFAULT_INPUT,
+    *,
+    expected_path: Path,
+    base_output_dir: Path = DEFAULT_OUTPUT_DIR,
+    params: Mapping[str, Any] | None = None,
+) -> Path:
     """Run inference followed by evaluation.
 
     Args:
