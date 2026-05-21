@@ -6,7 +6,7 @@ use_cluster = "{{ cookiecutter.cluster }}" == "yes"
 use_docker = "{{ cookiecutter.docker }}" == "yes"
 use_data_dir = "{{ cookiecutter.data_dir }}" != "none"
 use_local_data_dir = "{{ cookiecutter.data_dir }}" in ["local", "github"]
-create_example_files = "{{ cookiecutter.examples }}" == "yes"
+examples = "{{ cookiecutter.examples }}"
 keep_bsd3 = f"{{ cookiecutter.bsd }}" == "yes"
 use_annotations = f"{{ cookiecutter.ann }}" == "yes"
 
@@ -24,12 +24,14 @@ if not use_local_data_dir:
     os.remove("data/README.md")
     os.rmdir("data")
 
-if not create_example_files:
-    os.remove("src/{{ cookiecutter.code_directory }}/pipeline_example.py")
-    os.remove(
-        "src/{{ cookiecutter.code_directory }}/preprocess_util_lib_example.py"
+if examples != "no":
+    # Copy chosen example set into project root
+    shutil.copytree(
+        f"_examples/{examples.replace('-', '_')}", ".", dirs_exist_ok=True
     )
-    os.remove("notebooks/Test.ipynb")
+
+# Always remove the staging directory
+shutil.rmtree("_examples")
 
 if not keep_bsd3:
     os.remove("LICENSE")

@@ -5,7 +5,7 @@
     "cluster": ["yes", "no"],
     "docker": ["yes", "no"],
     "data_dir": ["none", "local", "github", "box"],
-    "examples": ["yes", "no"],
+    "examples": ["no", "generic", "data-science"],
     "bsd": ["yes", "no"],
     "ann": ["yes", "no"],
     "__prompts__": {
@@ -21,7 +21,12 @@
             "github": "GitHub: DATA_DIR will be {project_root}/data/ (does not support >100MB)",
             "box": "Box Drive: DATA_DIR will be ~/Library/CloudStorage/Box-Box/dsi-core/11th-hour/{project_name}, which is the default location for Box files on macOS"
         },
-        "examples": "Would you like to populate the repository with some example code?",
+        "examples": {
+            "__prompt__": "Would you like to populate the repository with example or scaffold code?",
+            "no": "No example code",
+            "generic": "Generic examples (pipeline, preprocessing)",
+            "data-science": "Data science scaffold (inference strategies, evaluation framework, CLI)"
+        },
         "bsd": "Would you like to use DSI's default license (BSD-3)?",
         "ann": "Would you like to require type annotations in ruff?"
     }

@@ -10,6 +10,10 @@ dependencies = [
   # project packages
   "numpy~=2.2",
   "pandas~=2.2",
+  {% if cookiecutter.examples == 'data-science' %}"click~=8.1",
+  "matplotlib~=3.9",
+  "seaborn~=0.13",
+  "tqdm~=4.67",{% endif %}
   {% if cookiecutter.data_dir != 'none' %}"python-dotenv~=1.0.0",{% endif %}
   {% if cookiecutter.cluster == 'yes' %}"submitit~=1.4",{% endif %}
 ]
@@ -23,6 +27,11 @@ dev = [
   "jupyterlab~=4.0.0",
   "ipykernel~=6.16",
 ]
+
+{% if cookiecutter.examples == 'data-science' %}
+[project.scripts]
+{{ cookiecutter.project_slug }} = "{{ cookiecutter.code_directory }}.cli:cli"
+{% endif %}
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -61,4 +70,4 @@ ignore = [
 convention = "google"
 
 [tool.pytest.ini_options]
-python_files = "*.py"
+python_files = "test_*.py"

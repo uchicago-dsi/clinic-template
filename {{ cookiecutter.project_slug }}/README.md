@@ -37,6 +37,169 @@ If you are using the DSI's cluster then you have another option with your `make`
 For more information about how to use Slurm, please look at the information [here](https://github.com/uchicago-dsi/core-facility-docs/blob/main/slurm.md).
 {% endif %}
 
+{% if cookiecutter.examples == 'data-science' %}
+## Working with This Project
+
+The project is built around two ideas:
+
+- **Inference strategies** — different approaches to solving the problem. You will spend most of your time adding and improving these.
+- **Evaluators** — code that scores how well a strategy did. You may also add or improve these.
+
+The key files are:
+
+| File/Folder | What it's for |
+|---|---|
+| `src/{{ cookiecutter.code_directory }}/inference_strategies/` | **Add your strategies here** |
+| `src/{{ cookiecutter.code_directory }}/evaluators/` | Add or improve evaluators here |
+| `src/{{ cookiecutter.code_directory }}/io.py` | How data is loaded and saved (fill this in for your project) |
+
+---
+
+### How to add an inference strategy
+
+1. Create a new `.py` file in `src/{{ cookiecutter.code_directory }}/inference_strategies/`. Name it something descriptive, e.g. `my_strategy.py`.
+2. Copy this template into the file and fill in your logic:
+
+```python
+from typing import Any
+from {{ cookiecutter.code_directory }}.inference import InferenceStrategy
+
+class MyStrategy(InferenceStrategy):
+    """One sentence describing what this strategy does."""
+
+    def do_inference(self, inference_input: Any) -> dict[str, Any]:
+        # Write your logic here.
+        # inference_input is one item from your dataset.
+        # Return a dict with your results, e.g.:
+        return {"label": "my_prediction"}
+```
+
+3. Save the file. Your strategy is now available to use everywhere by its class name — `"MyStrategy"` in this example.
+
+If your strategy has settings you want to tune (like a threshold or a model name), add them as parameters to `__init__`:
+
+```python
+def __init__(self, threshold: float = 0.5):
+    self.threshold = threshold
+```
+
+---
+
+### How to test a strategy on one value in a notebook
+
+Import your strategy class directly and call `do_inference` on a single input:
+
+```python
+from {{ cookiecutter.code_directory }}.inference_strategies.my_strategy import MyStrategy
+
+strategy = MyStrategy(threshold=0.8)
+result = strategy.do_inference(my_single_input)
+print(result)
+```
+
+This is the fastest way to check that your logic works before running it on the full dataset.
+
+---
+
+### How to run the full pipeline in a notebook
+
+Once your strategy works on a single input, run it across the whole dataset and evaluate:
+
+```python
+from {{ cookiecutter.code_directory }}.pipeline import run_pipeline
+
+run_dir = run_pipeline(
+    "MyStrategy",
+    "ClassifierEvaluator",
+    params={"threshold": 0.8},  # optional — only if your strategy takes parameters
+    expected_path=...,          # path to the ground-truth data
+)
+print("Results saved to:", run_dir)
+```
+
+Results (outputs, scores, and any plots) are saved to a folder inside `data/output/`.
+
+To run inference and evaluation as separate steps:
+
+```python
+from {{ cookiecutter.code_directory }}.pipeline import run_inference, run_evaluation
+
+run_dir = run_inference("MyStrategy", params={"threshold": 0.8})
+run_evaluation("ClassifierEvaluator", run_dir=run_dir, expected_path=...)
+```
+
+---
+
+### How to run the pipeline from the command line
+
+From the project root, run inference and evaluation together:
+
+```bash
+{{ cookiecutter.project_slug }} run \
+    --strategy MyStrategy \
+    --evaluator ClassifierEvaluator \
+    --param threshold=0.8 \
+    --expected data/expected
+```
+
+To run just inference:
+
+```bash
+{{ cookiecutter.project_slug }} infer --strategy MyStrategy --param threshold=0.8
+```
+
+To evaluate an existing set of outputs:
+
+```bash
+{{ cookiecutter.project_slug }} evaluate \
+    --evaluator ClassifierEvaluator \
+    --run-dir data/output/MyStrategy/2025-01-01_12-00-00 \
+    --expected data/expected
+```
+
+Add `--help` to see all available options for any command:
+
+```bash
+{{ cookiecutter.project_slug }} run --help
+```
+
+---
+
+### How to add or improve an evaluator
+
+Evaluators live in `src/{{ cookiecutter.code_directory }}/evaluators/`. Each evaluator scores a single prediction against the correct answer.
+
+1. Create a new `.py` file in the `evaluators/` folder.
+2. Use this template:
+
+```python
+from typing import Any
+from {{ cookiecutter.code_directory }}.evaluation import AbstractEvaluator
+
+class MyEvaluator(AbstractEvaluator):
+    """One sentence describing what this evaluator measures."""
+
+    def evaluate_single_output(self, predicted: Any, actual: Any) -> dict[str, Any]:
+        # Compare predicted to actual. Return a dict of scores.
+        return {
+            "is_correct": predicted == actual,
+        }
+```
+
+To add a plot to the evaluation report, add a `make_plots` method. It should return a dict where each key is a plot name and each value is a matplotlib figure — the figures are saved automatically when evaluation runs.
+
+```python
+import matplotlib.pyplot as plt
+
+def make_plots(self, evaluation_results: dict) -> dict[str, plt.Figure]:
+    fig, ax = plt.subplots()
+    # ... build your plot using evaluation_results ...
+    return {"my_plot": fig}
+```
+
+See `classifier_evaluator.py` for a complete example.
+
+{% endif %}
 ## Style
 We use [`ruff`](https://docs.astral.sh/ruff/) to enforce style standards and grade code quality. This is an automated code checker that looks for specific issues in the code that need to be fixed to make it readable and consistent with common standards. `ruff` is run before each commit via [`pre-commit`](https://pre-commit.com/). If it fails, the commit will be blocked and the user will be shown what needs to be changed.
 
